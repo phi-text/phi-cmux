@@ -1,0 +1,8 @@
+name: phi_cmux
+version: 1.0.0
+description: Curses windowing system.
+author: phantamanta44
+homepage: https://github.com/phi-text
+dependencies:
+  curses_abst:
+    git: git://github.com/phi-text/phi-curses-abstraction.git
