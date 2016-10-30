@@ -11,9 +11,9 @@ class WindowManager {
     this._active = 0;
   }
 
-  int get activeTree => _active;
+  int get activeIndex => _active;
 
-  set activeTree(int index) {
+  set activeIndex(int index) {
     if (index >= 0 && index < _trees.length)
       _active = index;
     throw new IndexError(index, this);
@@ -22,6 +22,8 @@ class WindowManager {
   int get treeCount => _trees.length;
 
   operator [](int index) => _trees[index];
+
+  WindowTree get activeTree => this[activeIndex];
 }
 
 class WindowTree {
