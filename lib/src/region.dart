@@ -31,6 +31,12 @@ class WindowRegion implements Window {
     this._height = y;
   }
 
+  void fitTo(WindowRegion region) {
+    resize(region.width, region.height);
+    _x = region._x;
+    _y = region._y;
+  }
+
   void clear() => _window.regionOf(_x, _y, _width, _height).forEach((c) => c.clear());
 
   Stream<ResizeEvent> get resizeEvents => _resizeController.stream;
@@ -43,6 +49,8 @@ class WindowRegion implements Window {
     this._x += xOff;
     this._y += yOff;
   }
+
+  Window get window => _window;
 }
 
 class WindowCursor extends Cursor { }

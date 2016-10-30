@@ -31,16 +31,17 @@ class WindowTree {
   TreeElement _root;
 
   WindowTree(this._parent) {
-    this._root = new TreeElement(new WindowNode(0, 0, _parent._window.width, _parent._window.height, _parent._window));
+    this._root = new TreeElement(new WindowNode(0, 0, _parent._window.width, _parent._window.height, _parent._window, null), this);
   }
 
   TreeElement get root => _root;
 }
 
 class TreeElement {
+  WindowTree _tree;
   dynamic _node;
 
-  TreeElement(this._node);
+  TreeElement(this._node, this._tree);
 
   bool get isWindow => _node is WindowNode;
 
@@ -48,18 +49,24 @@ class TreeElement {
 
   WindowNode split(NodeOrientation orientation, [bool prepend = false]) {
     if (prepend) {
-      _node = _node.splitPrepend(orientation, (r) => new WindowNode.fromRegion(r));
+      _node = _node.splitPrepend(orientation, (r) => new WindowNode.fromRegion(r, null));
       return _node.child1;
     }
-    _node = _node.splitPrepend(orientation, (r) => new WindowNode.fromRegion(r));
+    _node = _node.splitPrepend(orientation, (r) => new WindowNode.fromRegion(r, null));
     return _node.child2;
+  }
+
+  bool close() {
+    if (!(_node is WindowNode))
+      throw new UnsupportedError('Only WindowNode can be closed!');
+    return _node.destroy();
   }
 
   bool get isSplit => _node is BiNode;
 
-  TreeElement get child1 => new TreeElement(_node.child1);
+  TreeElement get child1 => new TreeElement(_node.child1, _tree);
 
-  TreeElement get child2 => new TreeElement(_node.child2);
+  TreeElement get child2 => new TreeElement(_node.child2, _tree);
 }
 
 enum NodeOrientation {
